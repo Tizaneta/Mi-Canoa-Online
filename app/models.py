@@ -6,6 +6,7 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship("Comment", backref="post", lazy=True)
     
     
 class User(db.Model):
@@ -13,9 +14,10 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     comments = db.relationship("Comment", backref="user", lazy=True)
     posts = db.relationship("Post", backref="user", lazy=True)
+    likes = db.relationship("Like", backref="user", lazy=True)
     
     
 class Comment(db.Model):
@@ -23,7 +25,7 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-    created_at = db.Column(db.DateTime) 
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     likes = db.relationship("Like", backref="comment", lazy=True)
 
 
@@ -31,5 +33,5 @@ class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=False)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     __table_args__ = (db.UniqueConstraint('user_id', 'comment_id'))

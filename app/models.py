@@ -34,4 +34,4 @@ class Like(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    __table_args__ = (db.UniqueConstraint('user_id', 'comment_id'))
+    __table_args__ = (db.UniqueConstraint('user_id', 'comment_id'),)

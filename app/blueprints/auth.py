@@ -4,4 +4,4 @@ auth = Blueprint('auth', __name__)
 @auth.route('/user/<username>')
 
 def profile(username):
-    return f"Hello, {username}! This is your profile."
+    return f"Hi there, {username}! This is your profile from Canoa Online."
